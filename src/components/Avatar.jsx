@@ -1,3 +1,4 @@
+"use client"
 import { useFBX, useGLTF } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import React, { useEffect, useState, useRef, useCallback } from "react";
