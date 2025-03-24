@@ -9,7 +9,7 @@ import Avatar from "./Avatar";
 const Duck = ({ className }) => {
   return (
     <Canvas
-      camera={{ position: [0, 1, 4] }}
+      camera={{ position: [0, 1, 4.2] }}
       className={clsx("w-screen h-screen mt-48", className)}
     >
       <Suspense fallback={null}>
