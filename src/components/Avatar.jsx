@@ -1,5 +1,3 @@
-"use client";
-
 import { useFBX, useGLTF } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import React, { useEffect, useState, useRef, useCallback } from "react";
@@ -23,7 +21,14 @@ export default function Avatar(props) {
     const clone = SkeletonUtils.clone(scene);
     setClonedScene(clone);
     mixer.current = new THREE.AnimationMixer(clone);
+    
+    // Debugging: Log all mesh names to check for head
     console.log("Scene Loaded:", clone.children);
+    clone.traverse((child) => {
+      if (child.isMesh) {
+        console.log("Mesh found:", child.name);
+      }
+    });
   }, [scene]);
 
   useEffect(() => {
@@ -53,7 +58,7 @@ export default function Avatar(props) {
 
     setIsGreetingPlayed(true);
     console.log("Greeting animation started.");
-    camera.position.set(0, 1, 3.7);
+    camera.position.set(0, 1, 3.7); // Reset the camera position
   }, [clonedScene, greetingAnim, mixer, camera]);
 
   useEffect(() => {
