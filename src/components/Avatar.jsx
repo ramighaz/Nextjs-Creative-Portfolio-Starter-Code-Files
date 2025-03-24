@@ -2,7 +2,7 @@
 
 import { useFBX, useGLTF } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import * as THREE from "three";
 import { SkeletonUtils } from "three-stdlib";
 
@@ -19,7 +19,7 @@ export default function Avatar(props) {
 
   useEffect(() => {
     if (!scene) return;
-    
+
     const clone = SkeletonUtils.clone(scene);
     setClonedScene(clone);
     mixer.current = new THREE.AnimationMixer(clone);
@@ -28,7 +28,7 @@ export default function Avatar(props) {
 
   useEffect(() => {
     if (!clonedScene || !dyingAnim.animations.length || !greetingAnim.animations.length) return;
-    
+
     const dyingAction = mixer.current.clipAction(dyingAnim.animations[0]);
     dyingAction.setLoop(THREE.LoopOnce, 1);
     dyingAction.clampWhenFinished = true;
@@ -42,25 +42,25 @@ export default function Avatar(props) {
     });
   }, [clonedScene, dyingAnim, greetingAnim]);
 
-  useEffect(() => {
-    if (isDyingFinished && !isGreetingPlayed) {
-      playGreetingAnimation();
-    }
-  }, [isDyingFinished]);
-
-  const playGreetingAnimation = () => {
+  const playGreetingAnimation = useCallback(() => {
     if (!clonedScene) return;
-    
+
     const greetingAction = mixer.current.clipAction(greetingAnim.animations[0]);
     greetingAction.reset();
     greetingAction.setLoop(THREE.LoopOnce, 1);
     greetingAction.clampWhenFinished = true;
     greetingAction.play();
-    
+
     setIsGreetingPlayed(true);
     console.log("Greeting animation started.");
     camera.position.set(0, 1, 3.5);
-  };
+  }, [clonedScene, greetingAnim, mixer, camera]);
+
+  useEffect(() => {
+    if (isDyingFinished && !isGreetingPlayed) {
+      playGreetingAnimation();
+    }
+  }, [isDyingFinished, isGreetingPlayed, playGreetingAnimation]);
 
   const handleClick = () => {
     console.log("Avatar clicked.");
