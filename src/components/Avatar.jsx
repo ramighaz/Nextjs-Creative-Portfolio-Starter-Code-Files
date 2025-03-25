@@ -59,7 +59,7 @@ export default function Avatar(props) {
 
     setIsGreetingPlayed(true);
     console.log("Greeting animation started.");
-    camera.position.set(0, 1, 3.7); // Reset the camera position
+    camera.position.set(0, 1, 4); // Reset the camera position
   }, [clonedScene, greetingAnim, mixer, camera]);
 
   useEffect(() => {
